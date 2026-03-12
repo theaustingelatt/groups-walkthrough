@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Groups Feature Walkthrough</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #22c55e;
+      --accent-light: #f0fdf4;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #ffffff;
+      --step-bg: #f9fafb;
+      --nav-bg: #ffffff;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-img: 0 4px 24px rgba(0,0,0,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    /* ── TOP NAV ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      height: 56px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .header-inner::-webkit-scrollbar { display: none; }
+
+    .site-title {
+      font-size: 15px;
+      font-weight: 700;
+      white-space: nowrap;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+
+    nav { display: flex; gap: 4px; flex-shrink: 0; }
+
+    nav a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+    }
+    nav a:hover { background: var(--accent-light); color: var(--accent); }
+    nav a.active { background: var(--accent-light); color: var(--accent); }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+
+    /* ── SECTION ── */
+    .section { margin-bottom: 72px; }
+
+    .section-header { margin-bottom: 32px; }
+
+    .section-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .section-intro {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.7;
+      border-left: 3px solid var(--accent);
+      padding-left: 16px;
+    }
+
+    /* ── STEP ── */
+    .step {
+      background: var(--step-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      margin-bottom: 20px;
+    }
+
+    .step-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .step-number {
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .step-description {
+      font-size: 15px;
+      color: #374151;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .placeholder {
+      color: #9ca3af;
+      font-style: italic;
+    }
+
+    .screenshot-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    .screenshot-wrap img {
+      width: 100%;
+      max-width: 280px;
+      border-radius: 28px;
+      box-shadow: var(--shadow-img);
+      display: block;
+    }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 64px 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 480px) {
+      main { padding: 32px 16px 64px; }
+      .section-title { font-size: 22px; }
+      .step { padding: 20px 16px; }
+      .screenshot-wrap img { max-width: 100%; border-radius: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <span class="site-title">Groups Walkthrough</span>
+      <nav>
+        <a href="#org-admin">Org Admin</a>
+        <a href="#new-challenge">New Challenge</a>
+        <a href="#pin-course">Pin a Course</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ══════════════════════════════════════
+         SECTION 1 — ORG ADMIN
+    ══════════════════════════════════════ -->
+    <section class="section" id="org-admin">
+      <div class="section-header">
+        <span class="section-label">Section 1</span>
+        <h2 class="section-title">Org Admin</h2>
+        <p class="section-intro placeholder">
+          Write a short intro here explaining what Org Admin is and who should use it.
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="step-meta">
+          <div class="step-number">1</div>
+          <span class="step-title">Accessing Org Admin</span>
+        </div>
+        <p class="step-description placeholder">Describe how to get here — e.g. tap the menu icon, then select "Org Admin" from the list.</p>
+        <div class="screenshot-wrap">
+          <img src="orgAdmin1.png" alt="Menu showing Org Admin option" />
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-meta">
+          <div class="step-number">2</div>
+          <span class="step-title">The Org Admin Dashboard</span>
+        </div>
+        <p class="step-description placeholder">Explain the dashboard — Active Groups, Active Members, Total AOEs, People Added, and the Acts of Evangelism breakdown.</p>
+        <div class="screenshot-wrap">
+          <img src="orgAdmin2.png" alt="Org Admin dashboard with group statistics" />
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-meta">
+          <div class="step-number">3</div>
+          <span class="step-title">Managing Groups</span>
+        </div>
+        <p class="step-description placeholder">Explain the group list and the options available — View Details, Manage Members, Edit Group, and Delete Group.</p>
+        <div class="screenshot-wrap">
+          <img src="orgAdmin3.png" alt="Group list with management options" />
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-meta">
+          <div class="step-number">4</div>
+          <span class="step-title">Group Detail View</span>
+        </div>
+        <p class="step-description placeholder">Describe the individual group view — member stats, Learning &amp; Growth metrics (Courses, Microlearnings, Challenges Completed), and the Tools section.</p>
+        <div class="screenshot-wrap">
+          <img src="orgAdmin4.png" alt="Individual group detail and member stats" />
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ══════════════════════════════════════
+         SECTION 2 — NEW CHALLENGE
+    ══════════════════════════════════════ -->
+    <section class="section" id="new-challenge">
+      <div class="section-header">
+        <span class="section-label">Section 2</span>
+        <h2 class="section-title">New Challenge</h2>
+        <p class="section-intro placeholder">
+          Write a short intro here explaining what group challenges are and why leaders use them.
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="step-meta">
+          <div class="step-number">1</div>
+          <span class="step-title">The Challenges Tab</span>
+        </div>
+        <p class="step-description placeholder">Explain the Challenges tab in a group — what "Live Challenges" means and how to start adding a new one.</p>
+        <div class="screenshot-wrap">
+          <img src="newChallenge1.png" alt="Group challenges tab with Add a new Challenge button" />
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-meta">
+          <div class="step-number">2</div>
+          <span class="step-title">Picking a Challenge</span>
+        </div>
+        <p class="step-description placeholder">Describe the challenge selection screen and how to browse and choose from the available challenges.</p>
+        <div class="screenshot-wrap">
+          <img src="newChallenge2.png" alt="Create a group challenge — selecting a challenge" />
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-meta">
+          <div class="step-number">3</div>
+          <span class="step-title">Setting a Start Date</span>
+        </div>
+        <p class="step-description placeholder">Explain the date field — what "a day from now" means and how leaders can set when the challenge goes live.</p>
+        <div class="screenshot-wrap">
+          <img src="newChallenge3.png" alt="Challenge creation with date field" />
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-meta">
+          <div class="step-number">4</div>
+          <span class="step-title">Choosing a Date from the Calendar</span>
+        </div>
+        <p class="step-description placeholder">Describe how to use the date picker — tap a date, then confirm.</p>
+        <div class="screenshot-wrap">
+          <img src="newChallenge4.png" alt="Calendar date picker" />
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-meta">
+          <div class="step-number">5</div>
+          <span class="step-title">Publishing the Challenge</span>
+        </div>
+        <p class="step-description placeholder">Explain the Queued Challenges section and the Publish button — what happens when you tap it.</p>
+        <div class="screenshot-wrap">
+          <img src="newChallenge5.png" alt="Queued challenge with Publish button" />
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-meta">
+          <div class="step-number">6</div>
+          <span class="step-title">Confirming Publication</span>
+        </div>
+        <p class="step-description placeholder">Describe the confirmation dialog — once confirmed, the challenge becomes visible to the whole group.</p>
+        <div class="screenshot-wrap">
+          <img src="newChallenge6.png" alt="Publish challenge confirmation dialog" />
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ══════════════════════════════════════
+         SECTION 3 — PIN A COURSE
+    ══════════════════════════════════════ -->
+    <section class="section" id="pin-course">
+      <div class="section-header">
+        <span class="section-label">Section 3</span>
+        <h2 class="section-title">Pin a Course</h2>
+        <p class="section-intro placeholder">
+          Write a short intro here explaining what pinning a course does and why it's useful for group leaders.
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="step-meta">
+          <div class="step-number">1</div>
+          <span class="step-title">The Courses Tab</span>
+        </div>
+        <p class="step-description placeholder">Explain the Courses tab — what content lives here and how to start adding a course to the group.</p>
+        <div class="screenshot-wrap">
+          <img src="pinCourse1.png" alt="Group courses tab with Add a Course button" />
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-meta">
+          <div class="step-number">2</div>
+          <span class="step-title">Selecting and Pinning a Course</span>
+        </div>
+        <p class="step-description placeholder">Describe how to pick a course from the list and tap "Pin course" to make it available to group members.</p>
+        <div class="screenshot-wrap">
+          <img src="pinCourse2.png" alt="Select Course screen with Pin course button" />
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Groups Feature Walkthrough &mdash; Internal Use Only
+  </footer>
+
+  <script>
+    // Highlight active nav link based on scroll position
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('nav a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>
