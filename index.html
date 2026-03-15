@@ -193,6 +193,55 @@
       display: block;
     }
 
+    /* ── CREDENTIALS ── */
+    .credential-card {
+      background: var(--step-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .credential-role {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .credential-note {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .credential-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .credential-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      width: 64px;
+      flex-shrink: 0;
+    }
+
+    .credential-value {
+      font-size: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      background: #f3f4f6;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 10px;
+      color: var(--text);
+      user-select: all;
+    }
+
     /* ── DIVIDER ── */
     .section-divider {
       border: none;
@@ -227,6 +276,7 @@
         <a href="#new-challenge">New Challenge</a>
         <a href="#pin-course">Pin a Course</a>
         <a href="#join-org">Join Org &amp; Group</a>
+        <a href="#credentials">Credentials</a>
       </nav>
     </div>
   </header>
@@ -462,6 +512,35 @@
         <div class="screenshot-wrap">
           <img src="joinOrg3.png" alt="Group activity feed showing member updates" />
         </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ══════════════════════════════════════
+         CREDENTIALS
+    ══════════════════════════════════════ -->
+    <section class="section" id="credentials">
+      <div class="section-header">
+        <span class="section-label">Accounts</span>
+        <h2 class="section-title">Credentials</h2>
+        <p class="section-intro">
+          Two test accounts have been set up for showcasing. Use the appropriate account depending on what you're demonstrating.
+        </p>
+      </div>
+
+      <div class="credential-card">
+        <div class="credential-role">Org Admin</div>
+        <p class="credential-note">Full org-level access — use this account to demonstrate the Org Admin dashboard, group management, and admin-only features.</p>
+        <div class="credential-row"><span class="credential-label">Email</span><code class="credential-value">orgadmin@cv.com</code></div>
+        <div class="credential-row"><span class="credential-label">Password</span><code class="credential-value">mnbvL4s!</code></div>
+      </div>
+
+      <div class="credential-card">
+        <div class="credential-role">Church Member</div>
+        <p class="credential-note">Standard member access — use this account to demonstrate the member experience: joining a group, viewing the activity feed, completing challenges, and more.</p>
+        <div class="credential-row"><span class="credential-label">Email</span><code class="credential-value">churchmember@cv.com</code></div>
+        <div class="credential-row"><span class="credential-label">Password</span><code class="credential-value">mnbvL4S!</code></div>
       </div>
     </section>
 
